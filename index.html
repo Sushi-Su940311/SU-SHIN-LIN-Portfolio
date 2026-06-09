@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SU SHIN LIN | Portfolio</title>
+    <style>
+        /* --- 全域重設 --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden; 
+            scrollbar-width: none;
+        }
+        
+        html::-webkit-scrollbar {
+            display: none;
+        }
+
+        body {
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Courier New", monospace;
+            background-color: #1a1a1a;
+            overflow-y: auto; 
+            overflow-x: hidden;
+            min-height: 100vh;
+            cursor: none; 
+        }
+        
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        a, button, .logo-interactive-wrap, .draggable-sticker, .service-card, .filter-btn, .fixed-double-eyes-container, .single-eye-wrap, .about-magnetic-stage, .modal-close-btn, .video-trigger-btn {
+            cursor: none !important;
+        }
+
+        /* ==========================================
+            【滑鼠效果】自訂客製化滑鼠鼠標 (Custom Cursor)
+            ========================================== */
+        .custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 12px;
+            height: 12px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            pointer-events: none; 
+            z-index: 1001; 
+            transform: translate(-50%, -50%);
+            will-change: transform, width, height, background-color;
+            mix-blend-mode: difference; 
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        .custom-cursor.hover {
+            width: 24px;
+            height: 24px;
+            background-color: #d9381e; 
+        }
+
+        /* ==========================================
+            【影片彈窗樣式】純影片，置中
+            ========================================== */
+        .video-overlay-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .video-overlay-modal.active { display: flex; }
+        .video-overlay-modal video { max-width: 80%; max-height: 80%; outline: none; }
+        .close-video-trigger { position: absolute; top: 40px; right: 40px; color: #fff; font-size: 1rem; font-weight: 800; cursor: pointer; letter-spacing: 2px; }
+
+        /* ==========================================
+            【網頁主體：第一層】頂部固定導覽區
+            ========================================== */
+        .fixed-nav-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100; 
+        }
+
+        .header-cardboard-zone {
+            width: 100%;
+            height: 70px;
+            background-image: url('./head.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            padding: 0 20px;
+        }
+
+        .white-spacer-line {
+            width: 100%;
+            height: 20px;
+            background-color: #ffffff;
+            box-shadow: inset 0 -1px 2px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            gap: 16px; 
+        }
+
+        .nav-btn {
+            text-decoration: none;
+            background-color: #ffffffcf;
+            color: #0b3c95;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 6px 24px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            background-color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ==========================================
+            【右下角元件】固定在網頁右下角的雙紅圈互動豆豆眼
+            ========================================== */
+        .fixed-double-eyes-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 95; 
+            display: flex;
+            gap: 4px; 
+            pointer-events: auto;
+            background-color: #ffffff; 
+            padding: 15px 20px;
+            border-radius: 40px; 
+            box-shadow: 3px 6px 12px rgba(0,0,0,0.25);
+        }
+
+        .single-eye-wrap {
+            position: relative;
+            width: 54px; 
+            height: 54px;
+            border: 4px solid #b33e25; 
+            background-color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .movable-pupil {
+            position: absolute;
+            width: 25px; 
+            height: 25px;
+            background-color: #b33e25; 
+            border-radius: 50%;
+            will-change: transform;
+        }
+
+        .fixed-double-eyes-container:hover {
+            transform: scale(1.06) translateY(-2px);
+        }
+
+        /* ==========================================
+            【網頁主體：滾動內容層】
+            ========================================== */
+        .scrollable-content-wrapper {
+            width: 100%;
+            padding-top: 90px; 
+        }
+
+        #aboutSection {
+            width: 100%;
+            min-height: calc(100vh - 90px); 
+            position: relative;
+            background-color: #1b4d3e; 
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.12) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px);
+            background-size: 20px 20px;
+            padding: 30px 80px 40px 80px; 
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 60px;
+        }
+
+        .about-content-left {
+            flex: 1.05;
+            display: flex;
+            flex-direction: column;
+            padding-left: 50px; 
+            position: relative;
+            z-index: 10;
+        }
+
+        .about-main-title {
+            color: #ffffff;
+            font-size: 4.8rem; 
+            font-weight: 800;
+            letter-spacing: -2px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            text-shadow: 2px 4px 0px rgba(0,0,0,0.15);
+        }
+
+        .about-name-tape {
+            align-self: flex-start;
+            background-color: #ffcc00;
+            color: #111111;
+            font-size: 1.25rem;
+            font-weight: 800;
+            padding: 4px 18px;
+            transform: rotate(-1.5deg);
+            margin-bottom: 25px;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.3);
+        }
+        .about-name-tape span {
+            font-size: 0.88rem;
+            font-weight: 500;
+            margin-left: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .about-core-bio-box {
+            background-color: #ffffff;
+            color: #111111;
+            padding: 22px 28px; 
+            border-radius: 0px 25px 25px 25px; 
+            box-shadow: 5px 6px 0px #b33e25; 
+            margin-bottom: 35px;
+            max-width: 540px; 
+        }
+
+        .about-description-text {
+            font-size: 1.02rem;
+            line-height: 1.7;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .info-cards-stack-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 540px; 
+            margin-bottom: 40px; 
+        }
+
+        .info-collage-card {
+            background-color: #1a1a1a;
+            border-left: 5px solid #ffffff; 
+            padding: 18px 20px; 
+            box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+            transform: none !important; 
+            transition: none !important; 
+        }
+        
+        .info-collage-card:nth-child(1) { border-left-color: #0b3c95; } 
+        .info-collage-card:nth-child(2) { border-left-color: #d9381e; } 
+        .info-collage-card:nth-child(3) { border-left-color: #ffcc00; } 
+        .info-collage-card:nth-child(4) { border-left-color: #ffffff; }
+
+        .info-collage-card:hover {
+            transform: none !important;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.3) !important;
+        }
+
+        .card-section-title {
+            color: #ffffff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            opacity: 0.5;
+        }
+
+        .card-list-item {
+            color: #ffffff;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+        .card-list-item:last-child { margin-bottom: 0; }
+
+        .card-list-item span {
+            display: block;
+            font-size: 0.72rem;
+            color: rgba(255,255,255,0.4);
+            font-family: 'Courier New', monospace;
+            margin-bottom: 1px;
+        }
+
+        .skill-tags-wrapper {
+            display: flex;
+            gap: 8px;
+            margin-top: 3px;
+        }
+        .skill-tag {
+            background-color: #252525;
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border: 1px dashed rgba(255,255,255,0.2);
+            font-family: 'Courier New', monospace;
+        }
+
+        .about-magnetic-stage {
+            flex: 0.95;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            perspective: 1000px; 
+            position: relative;
+            z-index: 10;
+            padding-right: 40px; 
+        }
+
+        .about-visual-right-card {
+            width: 90%;
+            max-width: 400px; 
+            aspect-ratio: 0.85 / 1;
+            position: relative; 
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.15);
+            background-color: #1a1a1a;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            will-change: transform;
+            transform-style: preserve-3d;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.2, 1), box-shadow 0.4s ease;
+        }
+
+        .about-personal-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(15%) contrast(102%);
+            transform: scale(1.05); 
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .about-photo-overlay-wrap {
+            position: absolute;
+            top: 15%; 
+            left: 15%;
+            width: 70%;
+            height: 70%;
+            z-index: 2; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border: 6px solid #ffffff; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            transform: translateZ(25px); 
+        }
+
+        .about-user-actual-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+        }
+
+        .magnetic-floating-badge {
+            position: absolute;
+            background-color: #ffffff;
+            color: #111111;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 8px 18px;
+            border-radius: 20px; 
+            box-shadow: 2px 8px 15px rgba(0,0,0,0.3);
+            white-space: nowrap;
+            will-change: transform;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.25);
+            z-index: 10;
+        }
+
+        .badge-1 { top: 12%; left: 0%; transform: rotate(-8deg); }
+        .badge-2 { top: 22%; right: -2%; transform: rotate(12deg); background-color: #b33e25; color: #fff;  }
+        .badge-3 { bottom: 20%; left: -5%; transform: rotate(15deg); background-color: #ffcc00; color: #111; } 
+        .badge-4 { bottom: 10%; right: 4%; transform: rotate(-10deg); }
+
+        .about-magnetic-stage:hover .about-visual-right-card {
+            box-shadow: 0 35px 60px rgba(0,0,0,0.65);
+        }
+
+        .video-trigger-btn {
+            background-color: #ffffff;
+            color: #1b4d3e;
+            padding: 12px 28px;
+            border-radius: 30px;
+            border: none;
+            font-weight: 800;
+            margin-top: 30px;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.3);
+        }
+
+        /* 畫布二：WORKS 作品展示區 */
+        #worksSection {
+            width: 100%;
+            background-color: #111111; 
+            padding: 110px 60px 100px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .services-main-title {
+            color: #ffffff;
+            font-size: 5.5rem;
+            font-weight: 800;
+            letter-spacing: -2px;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        .works-filter-navbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-bottom: 50px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 15px;
+        }
+
+        .filter-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.5); 
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 0;
+            position: relative;
+        }
+
+        .filter-btn.active {
+            color: #ffffff;
+        }
+
+        .filter-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -16px; 
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #ffffff;
+        }
+
+        .services-grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px; 
+            width: 100%;
+            will-change: transform, opacity;
+        }
+
+        .service-card {
+            background: none; 
+            border: none; 
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 0; 
+            will-change: opacity, transform;
+            transition: opacity 0.4s cubic-bezier(0.25, 1, 0.2, 1), 
+                        transform 0.4s cubic-bezier(0.25, 1, 0.2, 1);
+            position: relative;
+        }
+
+        .service-card.hidden {
+            display: none;
+        }
+
+        .card-visual-placeholder {
+            width: 100%;
+            aspect-ratio: 1 / 1; 
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background-color: #1a1a1a; 
+        }
+
+        .card-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .service-card:hover .card-overlay {
+            opacity: 0;
+        }
+
+        .card-project-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            filter: contrast(102%);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .card-info-bottom-row {
+            margin-top: 18px; 
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            text-align: left;
+        }
+
+        .card-project-title {
+            color: #ffffff;
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        .card-project-description {
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 0.9rem;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        .service-card:hover .card-project-img {
+            transform: scale(1.02);
+        }
+
+        /* 畫布三：HOME 貼紙畫布區 */
+        #homeSection {
+            width: 100%;
+            min-height: 120vh;
+            position: relative;
+            background-color: #1b4d3e; 
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.12) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px);
+            background-size: 20px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            flex-direction: column;
+            padding: 100px 0;
+        }
+
+        .contact-bar-wide {
+            background-color: #b33e25;
+            padding: 25px 50px; 
+            border-radius: 0; 
+            box-shadow: 4px 6px 15px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            gap: 60px; 
+            z-index: 100;
+            margin: 40px 0;
+            transform: rotate(-0.5deg);
+            width: 100%;
+            font-size: 1.1rem; 
+        }
+
+        .contact-tape-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #ffffff;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .contact-icon-circle {
+            width: 35px;
+            height: 35px;
+            background-color: rgba(255,255,255,0.2);
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1rem;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            flex-shrink: 0;
+        }
+        
+        .marquee-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+            overflow: hidden;
+            padding: 30px 0;
+        }
+
+        .marquee-row {
+            display: flex;
+            white-space: nowrap;
+            gap: 40px;
+            will-change: transform;
+        }
+
+        .marquee-right { animation: marqueeRight 30s linear infinite; }
+        .marquee-left { animation: marqueeLeft 30s linear infinite; }
+
+        @keyframes marqueeRight {
+            from { transform: translateX(-50%); }
+            to { transform: translateX(0%); }
+        }
+
+        @keyframes marqueeLeft {
+            from { transform: translateX(0%); }
+            to { transform: translateX(-50%); }
+        }
+
+        .draggable-sticker {
+            cursor: pointer !important;
+            flex-shrink: 0;
+        }
+
+        /* 作品詳情全螢幕彈窗 */
+        .project-detail-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #111111;
+            z-index: 1000; 
+            display: grid;
+            grid-template-columns: 1fr 450px; 
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity;
+        }
+
+        .project-detail-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-visual-left {
+            width: 100%;
+            height: 100vh;
+            background-color: #141414;
+            display: flex;
+            flex-direction: column;
+            padding: 60px 40px;
+            position: relative;
+            overflow-y: auto; 
+            scrollbar-width: none; 
+        }
+        .modal-visual-left::-webkit-scrollbar {
+            display: none; 
+        }
+
+        .media-item {
+            width: 100%;
+            display: flex;
+            margin-bottom: 40px;
+        }
+
+        .item-left { justify-content: flex-start; }
+        .item-right { justify-content: flex-end; }
+
+        .modal-gallery-img {
+            max-width: 60%; 
+            max-height: 70vh; 
+            object-fit: contain; 
+            animation: imgFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .modal-video-container video, .modal-iframe-container iframe {
+            max-width: 80%;
+            width: 100%;
+            height: auto;
+        }
+
+        .modal-content-right {
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-left: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-weight: 800;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+        }
+
+        .modal-project-title {
+            color: #fff;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        .modal-project-bio {
+            color: rgba(255,255,255,0.7);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .modal-meta-grid {
+            display: grid;
+            gap: 25px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 30px;
+        }
+
+        .meta-item-box p {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .meta-item-box h4 {
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        @keyframes imgFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- RWD 手機版排版優化 --- */
+        @media (max-width: 768px) {
+            body { cursor: auto !important; overflow-x: hidden !important; width: 100vw !important; }
+            a, button, .logo-interactive-wrap, .draggable-sticker, .service-card, .filter-btn, .fixed-double-eyes-container, .modal-close-btn { cursor: auto !important; }
+            .custom-cursor { display: none !important; } 
+            
+            .header-cardboard-zone { height: 55px; padding: 0 15px; }
+            .scrollable-content-wrapper { padding-top: 70px; width: 100vw !important; overflow-x: hidden !important; }
+            
+            #aboutSection { 
+                flex-direction: column !important; 
+                height: auto !important; 
+                padding: 40px 20px !important; 
+                gap: 20px !important; 
+                width: 100vw !important; 
+            }
+            .about-content-left { padding-left: 0 !important; width: 100% !important; } 
+            .about-main-title { font-size: 3rem !important; }
+            .about-core-bio-box { width: 100% !important; max-width: 100% !important; }
+            .info-cards-stack-grid { grid-template-columns: 1fr !important; width: 100% !important; }
+            
+            .about-magnetic-stage { 
+                width: 100% !important; 
+                padding-right: 0 !important; 
+                order: -1 !important; 
+            }
+            .about-visual-right-card { width: 100% !important; max-width: 320px !important; margin: 0 auto 20px auto !important; }
+            .magnetic-floating-badge { display: none !important; } 
+
+            #worksSection { padding: 50px 20px !important; width: 100vw !important; }
+            .services-grid-container { grid-template-columns: 1fr !important; width: 100% !important; }
+            
+            #homeSection { width: 100vw !important; padding: 50px 0 !important; }
+            .contact-bar-wide { width: 100% !important; gap: 15px !important; padding: 20px 10px !important; }
+            
+            .project-detail-modal { grid-template-columns: 1fr !important; }
+            .modal-visual-left { padding: 10px !important; }
+            .modal-gallery-img { max-width: 95% !important; }
+            
+            .fixed-double-eyes-container { bottom: 10px !important; right: 10px !important; padding: 8px !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="custom-cursor" id="customCursor"></div>
+
+    <div class="video-overlay-modal" id="videoModal">
+        <span class="close-video-trigger" onclick="closeIntro()">CLOSE ×</span>
+        <video id="introVideo" src="./intro.mp4" controls></video>
+    </div>
+
+    <div class="fixed-double-eyes-container" id="doubleEyesContainer">
+        <div class="single-eye-wrap" id="leftEyeWrap">
+            <div class="movable-pupil" id="pupilLeft"></div>
+        </div>
+        <div class="single-eye-wrap" id="rightEyeWrap">
+            <div class="movable-pupil" id="modalRight"></div>
+        </div>
+    </div>
+
+    <div class="fixed-nav-wrapper">
+        <div class="header-cardboard-zone">
+            <nav class="nav-container">
+                <button class="nav-btn" onclick="scrollToSection('aboutSection')">About Me</button>
+                <button class="nav-btn" onclick="scrollToSection('worksSection')">Works</button>
+                <button class="nav-btn" onclick="scrollToSection('homeSection')">Contact</button>
+            </nav>
+        </div>
+        <div class="white-spacer-line"></div>
+    </div>
+
+    <div class="scrollable-content-wrapper">
+        
+        <section class="about-me-section" id="aboutSection">
+            
+            <div class="about-content-left">
+                <h2 class="about-main-title">About Me</h2>
+                
+                <div class="about-name-tape">蘇芯琳<span>Su Shin Lin</span></div>
+                
+                <div class="about-core-bio-box">
+                    <p class="about-description-text">
+                        曾為花式溜冰選手，訓練過程培養了我對紀律與持續精進的重視。現就讀於元智大學資訊傳播學系設計組，喜歡從日常經驗與個人感受出發，將抽象概念轉化為具體設計作品。
+                    </p>
+                </div>
+
+                <div class="info-cards-stack-grid">
+                    <div class="info-collage-card">
+                        <div class="card-section-title">Education</div>
+                        <div class="card-list-item">
+                            <span>2020</span>松山家商 廣告設計科
+                        </div>
+                        <div class="card-list-item">
+                            <span>2023</span>元智大學 資訊傳播學系設計組
+                        </div>
+                    </div>
+
+                    <div class="info-collage-card">
+                        <div class="card-section-title">Experience</div>
+                        <div class="card-list-item">
+                            <span>2018</span>法國南特世界盃溜冰賽-團體精準隊形
+                        </div>
+                        <div class="card-list-item">
+                            <span>2025</span>校內 ISEE TV 專業研究
+                        </div>
+                    </div>
+
+                    <div class="info-collage-card">
+                        <div class="card-section-title">Skill</div>
+                        <div class="skill-tags-wrapper">
+                            <div class="skill-tag">Ai</div>
+                            <div class="skill-tag">Ps</div>
+                        </div>
+                    </div>
+
+                    <div class="info-collage-card">
+                        <div class="card-section-title">Award</div>
+                        <div class="card-list-item">
+                            <span>2026</span>CareNova 入圍育秀盃工業設計類
+                        </div>
+                        <div class="card-list-item">
+                            <span>2026</span>CareNova 入圍放視大賞跨領域類
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="about-magnetic-stage" id="magneticStage">
+                <div class="magnetic-floating-badge badge-1" data-speed="25">UI Design</div>
+                <div class="magnetic-floating-badge badge-2" data-speed="-15">Illustration</div>
+                <div class="magnetic-floating-badge badge-3" data-speed="20">Handmade Works</div>
+                <div class="magnetic-floating-badge badge-4" data-speed="-30">Graphic Design</div>
+
+                <div class="about-visual-right-card" id="magneticCard">
+                    <img src="./about_me_profile.png" class="about-personal-img" alt="Su Shin Lin Profile Frame">
+                    <div class="about-photo-overlay-wrap">
+                        <img src="./my_avatar.JPG" class="about-user-actual-photo" alt="Su Shin Lin Personal Photo">
+                    </div>
+                </div>
+
+                <button class="video-trigger-btn" onclick="openIntro()">WATCH INTRODUCTION</button>
+            </div>
+
+        </section>
+
+        <section class="services-dark-section" id="worksSection">
+            <h2 class="services-main-title">Works</h2>
+            
+            <div class="works-filter-navbar">
+                <button class="filter-btn active" data-filter="all">All Works</button>
+                <button class="filter-btn" data-filter="graphic">Graphic Design</button>
+                <button class="filter-btn" data-filter="ui">UI Design</button>
+                <button class="filter-btn" data-filter="motion">Motion & Video</button>
+                <button class="filter-btn" data-filter="illustration">Illustration & Handmade Works</button>
+            </div>
+            
+            <div class="services-grid-container" id="worksGrid">
+                <div class="service-card" data-project-id="1" data-tags="graphic">
+                    <div class="card-visual-placeholder">
+                        <div class="card-overlay"></div>
+                        <img src="./Resonance_of_Flight.png" class="card-project-img" alt="飛行共鳴 Resonance of Flight">
+                    </div>
+                    <div class="card-info-bottom-row">
+                        <div class="card-project-title">飛行共鳴 Resonance of Flight</div>
+                    </div>
+                </div>
+
+                <div class="service-card" data-project-id="2" data-tags="graphic">
+                    <div class="card-visual-placeholder">
+                        <div class="card-overlay"></div>
+                        <img src="./BIOLOGICAL_PART_SERIES.png" class="card-project-img" alt="生物零件系列 Biological Part Series">
+                    </div>
+                    <div class="card-info-bottom-row">
+                        <div class="card-project-title">生物零件系列 Biological Part Series</div>
+                    </div>
+                </div>
+
+                <div class="service-card" data-project-id="3" data-tags="ui">
+                    <div class="card-visual-placeholder">
+                        <div class="card-overlay"></div>
+                        <img src="./CareNova1.png" class="card-project-img" alt="陪伴雲 CareNova">
+                    </div>
+                    <div class="card-info-bottom-row">
+                        <div class="card-project-title">陪伴雲 CareNova</div>
+                    </div>
+                </div>
+
+                <div class="service-card" data-project-id="4" data-tags="motion">
+                    <div class="card-visual-placeholder">
+                        <div class="card-overlay"></div>
+                        <img src="./FROG.jpg" class="card-project-img" alt="P4">
+                    </div>
+                    <div class="card-info-bottom-row"><div class="card-project-title">蛙蛙!別煮我!Froggy! Don’t Cook Me!</div></div>
+                </div>
+                <div class="service-card" data-project-id="5" data-tags="graphic">
+                    <div class="card-visual-placeholder">
+                        <div class="card-overlay"></div>
+                        <img src="./Library_Signage_System_Design.png" class="card-project-img" alt="P5">
+                    </div>
+                    <div class="card-info-bottom-row"><div class="card-project-title">黎明圖書館指標系統改善Library Signage System Design</div></div>
+                </div>
+                <div class="service-card" data-project-id="6" data-tags="illustration">
+                    <div class="card-visual-placeholder">
+                        <div class="card-overlay"></div>
+                        <img src="./UNDER_THE_UMBRELLA.png" class="card-project-img" alt="P6"></div>
+                    <div class="card-info-bottom-row"><div class="card-project-title">雨傘下UNDER THE UMBRELLA</div></div>
+                </div>
+                <div class="service-card" data-project-id="7" data-tags="illustration">
+                    <div class="card-visual-placeholder">
+                        <div class="card-overlay"></div>
+                        <img src="./water.png" class="card-project-img" alt="P7"></div>
+                    <div class="card-info-bottom-row"><div class="card-project-title">水流的軌跡Traces of Water Flow</div></div>
+                </div>
+                
+                <div class="service-card" data-project-id="8" data-tags="motion">
+                    <div class="card-visual-placeholder">
+                        <div class="card-overlay"></div>
+                        <img src="./noodle2.jpg" class="card-project-img" alt="P8"></div>
+                    <div class="card-info-bottom-row"><div class="card-project-title">米干誕生計畫The Birth of Rice Noodles Project</div></div>
+                </div>
+
+                <div class="service-card" data-project-id="9" data-tags="graphic">
+                    <div class="card-visual-placeholder">
+                        <div class="card-overlay"></div>
+                        <img src="./14 Free Square Flyer Mockup With Shadow Overlay.png" class="card-project-img" alt="P9"></div>
+                    <div class="card-info-bottom-row"><div class="card-project-title">妖怪圖騰設計Monster Motif Composition</div></div>
+                </div>
+                <div class="service-card" data-project-id="10" data-tags="illustration">
+                    <div class="card-visual-placeholder">
+                        <div class="card-overlay"></div>
+                        <img src="./draw_frog.jpg" class="card-project-img" alt="P10"></div>
+                    <div class="card-info-bottom-row"><div class="card-project-title">樹蛙Tree Frog</div></div>
+                </div>
+                <div class="service-card" data-project-id="11" data-tags="illustration">
+                    <div class="card-visual-placeholder">
+                        <div class="card-overlay"></div>
+                        <img src="./print.png" class="card-project-img" alt="P11"></div>
+                    <div class="card-info-bottom-row"><div class="card-project-title">蛙Frog</div></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="main-cutting-mat-zone" id="homeSection">
+            <div class="marquee-container" id="stickersLayer">
+                <div class="marquee-row marquee-right">
+                    <img src="./sticker1.png" class="draggable-sticker" style="max-width: 250px;" alt="sticker">
+                    <img src="./sticker2.png" class="draggable-sticker" style="max-width: 270px;" alt="sticker">
+                    <img src="./sticker3.png" class="draggable-sticker" style="max-width: 250px;" alt="sticker">
+                    <img src="./sticker4.png" class="draggable-sticker" style="max-width: 220px;" alt="sticker">
+                    <img src="./sticker5.png" class="draggable-sticker" style="max-width: 300px;" alt="sticker">
+                    <img src="./sticker1.png" class="draggable-sticker" style="max-width: 250px;" alt="sticker">
+                    <img src="./sticker2.png" class="draggable-sticker" style="max-width: 270px;" alt="sticker">
+                    <img src="./sticker3.png" class="draggable-sticker" style="max-width: 250px;" alt="sticker">
+                    <img src="./sticker4.png" class="draggable-sticker" style="max-width: 220px;" alt="sticker">
+                    <img src="./sticker5.png" class="draggable-sticker" style="max-width: 300px;" alt="sticker">
+                </div>
+                
+                <div class="contact-bar-wide">
+                    <div class="contact-tape-row">
+                        <div class="contact-icon-circle">M</div>
+                        <div>元智大學 資訊傳播學系設計組</div>
+                    </div>
+                    <div class="contact-tape-row">
+                        <div class="contact-icon-circle">@</div>
+                        <div>cyndi0965303982@gmail.com</div>
+                    </div>
+                    <div class="contact-tape-row">
+                        <div class="contact-icon-circle">T</div>
+                        <div>0938-114-311</div>
+                    </div>
+                </div>
+
+                <div class="marquee-row marquee-left">
+                    <img src="./sticker6.png" class="draggable-sticker" style="max-width: 200px;" alt="sticker">
+                    <img src="./sticker7.png" class="draggable-sticker" style="max-width: 280px;" alt="sticker">
+                    <img src="./sticker8.png" class="draggable-sticker" style="max-width: 250px;" alt="sticker">
+                    <img src="./sticker9.png" class="draggable-sticker" style="max-width: 300px;" alt="sticker">
+                    <img src="./sticker10.png" class="draggable-sticker" style="max-width: 250px;" alt="sticker">
+                    <img src="./sticker6.png" class="draggable-sticker" style="max-width: 200px;" alt="sticker">
+                    <img src="./sticker7.png" class="draggable-sticker" style="max-width: 280px;" alt="sticker">
+                    <img src="./sticker8.png" class="draggable-sticker" style="max-width: 250px;" alt="sticker">
+                    <img src="./sticker9.png" class="draggable-sticker" style="max-width: 300px;" alt="sticker">
+                    <img src="./sticker10.png" class="draggable-sticker" style="max-width: 250px;" alt="sticker">
+                </div>
+            </div>
+
+            <div class="main-mat-content-holder" id="mainContentHolder"></div>
+        </section>
+
+    </div>
+
+    <div class="project-detail-modal" id="projectModal">
+        <div class="modal-visual-left" id="modalImagesContainer"></div>
+        <div class="modal-content-right">
+            <button class="modal-close-btn" id="modalCloseBtn">CLOSE ×</button>
+            <h3 class="modal-project-title" id="modalTitle">Project Title</h3>
+            <p class="modal-project-bio" id="modalBio">Description paragraph Goes Here...</p>
+            <div class="modal-meta-grid">
+                <div class="meta-item-box">
+                    <p>Advisor</p>
+                    <h4 id="modalAdvisor">-</h4>
+                </div>
+                <div class="meta-item-box">
+                    <p>Role</p>
+                    <h4 id="modalRole">-</h4>
+                </div>
+                <div class="meta-item-box">
+                    <p>Collaborative Tool</p>
+                    <h4 id="modalTool">-</h4>
+                </div>
+                <div class="meta-item-box">
+                    <p>Awards & Recognition</p>
+                    <h4 id="modalAwards">-</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const customCursor = document.getElementById('customCursor');
+        const mainContentHolder = document.getElementById('mainContentHolder');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const doubleEyesContainer = document.getElementById('doubleEyesContainer');
+        const pupilLeft = document.getElementById('pupilLeft');
+        const pupilRight = document.getElementById('modalRight');
+        const magneticStage = document.getElementById('magneticStage');
+        const magneticCard = document.getElementById('magneticCard');
+        const floatingBadges = document.querySelectorAll('.magnetic-floating-badge');
+        const projectModal = document.getElementById('projectModal');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        const modalImagesContainer = document.getElementById('modalImagesContainer');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBio = document.getElementById('modalBio');
+        const modalAdvisor = document.getElementById('modalAdvisor');
+        const modalRole = document.getElementById('modalRole');
+        const modalTool = document.getElementById('modalTool');
+        const modalAwards = document.getElementById('modalAwards');
+
+        // 影片控制
+        function openIntro() {
+            document.getElementById('videoModal').classList.add('active');
+            const video = document.getElementById('introVideo');
+            video.play();
+        }
+        function closeIntro() {
+            const modal = document.getElementById('videoModal');
+            const video = document.getElementById('introVideo');
+            video.pause();
+            video.currentTime = 0;
+            modal.classList.remove('active');
+        }
+
+        let realMouseX = window.innerWidth / 2;
+        let realMouseY = window.innerHeight / 2;
+        let renderCursorX = window.innerWidth / 2;
+        let renderCursorY = window.innerHeight / 2;
+        let curLeftX = 0, curLeftY = 0;
+        let curRightX = 0, curRightY = 0;
+        const maxMoveRadius = 10; 
+        let cardRotX = 0, cardRotY = 0;
+        let cardTransX = 0, cardTransY = 0;
+        let isTransitioning = false;
+
+        const projectsDatabase = {
+            "1": { title: "Resonance of Flight", bio: "本系列作品深受幾何抽象大師康丁斯基關於「藝術中的精神性」與「內在共鳴」的啟發。創作靈感源自一首關於飛行的音樂，藉由建構主義的幾何線條與強烈的色彩對比，在平面的視覺網格中激盪出集體協作與翱翔天際的動態共鳴。", images: [{src: "./Resonance_of_Flight.png", size: "60%"}, {src: "./Resonance_of_Flight_detail1.png", size: "60%"}, {src: "./Resonance of Flight_detail2.png", size: "60%"}, {src: "./Resonance of Flight_detail3.png", size: "60%"}, {src: "./Resonance of Flight_detail4.png", size: "60%"}], advisor: "陳麗秋", role: "Visual Design & Creative Direction", tool: "Illustrator, Photoshop", awards: "N/A" },
+            "2": { title: "生物零件系列 Biological Part Series", bio: "以「商品化」作為核心視覺衝突點，將大象與鯊魚等珍稀野生動物的身體部位，轉化為帶有冷冽工業感、可拆解的樂高積木零件玩具包裝（IVORY PART SET / SHARK FIN SET）。透過這種近乎殘酷的擬真包裝批判反思，傳達「沒有買賣，就沒有傷害」的深刻環境保護與野生動物保育訴求。", images: [{src: "./BIOLOGICAL_PART_SERIES_detail2.png", size: "150%"}], advisor: "陳麗秋", role: "Art Direction & Concept Development", tool: "Gemini, Photoshop", awards: "N/A" },
+            "3": { title: "陪伴雲 CareNova", bio: "是一套設定於 2050 年未來醫療情境下的概念型服務設計與介面設計作品，針對高齡化社會中長者照護、遠端診療、家屬同步與情緒陪伴等需求進行發想。作品以公部門醫療陪伴應用程式為核心，透過 AI 分級與數據支援系統，協助醫師提升診療效率、減少輕症負擔；同時讓家屬能即時掌握長者健康狀況，並讓病患在治療前後獲得更完整的情緒支持。在介面設計上，我們希望打破傳統醫療系統冰冷、制式的印象，改以溫暖、直覺且流暢的視覺語彙，打造一個結合醫療、關懷與社交的雲端陪伴空間。CareNova 不只是治療疾病的工具，也希望讓「理解」與「陪伴」成為未來健康照護的一部分。", images: [{src: "./CareNova2.png", size: "60%"}, {src: "./CareNova3.png", size: "60%"}], video: "./CareNova_video.mp4", iframe: '<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/proto/4pz9Obuh7f3shYMLdhR2uF/CareNova?node-id=20-54&p=f&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=10%3A4&embed-host=share" allowfullscreen></iframe>', advisor: "陳麗秋", role: "UI設計、海報設計(五人團隊合作專案)", tool: "Figma, Illustrator", awards: "2026入圍育秀盃工業設計類、2026入圍放視大賞跨領域類" },
+            "4": { title: "蛙蛙!別煮我!", bio: "是一部短篇動畫，故事以「溫水煮青蛙」為靈感，描述一隻原本在鍋中悠閒游泳的青蛙，逐漸發現自己身處危險並試圖逃脫的過程。作品透過擬人化的青蛙角色、誇張的表情動作與黑色幽默的劇情轉折，呈現生命面對危機時的掙扎與荒誕感。整體以手繪動畫風格製作，並搭配廚房、湯鍋、火爐等場景設計，強化故事的緊張與趣味性。", images: [{src: "./FROG1.jpg", size: "60%"},{src: "./FROG2.jpg", size: "60%"},{src: "./FROG6.jpg", size: "60%"},{src: "./FROG7.jpg", size: "60%"},{src: "./FROG8.jpg", size: "60%"},{src: "./FROG9.jpg", size: "60%"},{src: "./FROG10.jpg", size: "60%"},{src: "./FROG11.jpg", size: "60%"}], video: "./frog_video.mp4", advisor: "張世明", role: "角色設計、場景設計、線稿(四人團體合作專案)", tool: "Procreate, CapCut", awards: "" },
+            "5": { title: "黎明圖書館指標系統改善Library Signage System Design", bio: "本指標系統以圓形為核心視覺語彙，呼應「黎明」意象中太陽升起的象徵，傳達光明、引導與知識啟發的概念。透過圓形相切與重組的結構，延伸出如齒輪與鐘錶般的形態，象徵時間累積與知識沉澱，連結圖書館的歷史性與文化。 整體設計採用簡潔線條與幾何構成，使符號清晰直觀，提升辨識性與導引效率，並兼顧兒童與長者使用上的易讀性。", images: [{src: "./Library_Signage_System_Design4.png", size: "60%"},{src: "./Library_Signage_System_Design.png", size: "60%"},{src: "./Library_Signage_System_Design1.png", size: "60%"},{src: "./Library_Signage_System_Design2.png", size: "60%"},{src: "./Library_Signage_System_Design3.png", size: "60%"}], advisor: "黃絜如", role: "", tool: "Illustrator", awards: "" },
+            "6": { title: "雨傘下UNDER THE UMBRELLA", bio: "以童年撐傘的記憶為發想，透過雨傘、水管、紙板、玻璃紙與紙箱基座組成風動裝置。作品使用電風扇作為風源，讓上方雨傘與紙板結構受風吹動產生旋轉，象徵小時候轉動雨傘的回憶；垂掛的玻璃紙雨滴則會隨風晃動，呈現雨水流動與閃爍的感覺。下方基座除了固定結構，也讓觀者可以坐進「傘下」空間，感受被雨滴包圍、與外界暫時隔開的安靜氛圍。", images: [{src: "./UNDER_THE_UMBRELLA.png", size: "60%"},{src: "./UMBRELLA3.png", size: "60%"},{src: "./UMBRELLA2.png", size: "60%"}], video: "./umbrella_video.mp4", advisor: "劉開平", role: "概念發想、設計圖繪製、主要結構製作(五人團體合作專案)", tool: "Procreate", awards: "" },
+            "7": { title: "水流的軌跡", bio: "以水的流動作為發想，透過彎曲紙片重複排列，呈現水滴流動、堆積與起伏的狀態。作品分為水平與垂直兩種方向，水平排列呈現平穩、連續的波動感；垂直排列則強調高低起伏與向下延伸的動態，像水從高處傾瀉而下的瞬間。整體以紙材的彎曲與排列，表現水流的方向性與節奏感。", images: [{src: "./water.png", size: "60%"}, {src: "./water2.png", size: "60%"}, {src: "./water3.png", size: "60%"}, {src: "./water4.png", size: "60%"}], advisor: "劉開平", role: "", tool: "", awards: "" },
+            "8": { title: "米干誕生計畫", bio: "是一支以「上帝創造米干」梗圖概念延伸的影像作品，透過實驗人員調配彩色液體與實物的過程，象徵米干背後不同文化的融合。影片中加入台灣在來米、雲南與泰緬香料，以及代表龍岡熱情的元素，將混亂又帶有趣味感的實驗過程，轉化為一碗熱騰騰的米干，呈現龍岡多元文化交會後形成的獨特味道。", images: [{src: "./noodle6.jpg", size: "60%"},{src: "./noodle5.jpg", size: "60%"},{src: "./noodle4.jpg", size: "60%"},{src: "./noodle3.jpg", size: "60%"}], video: "./noodle_video.mp4", advisor: "張世明", role: "企劃腳本製作、燈光、剪輯(五人團隊合作專案)", tool: "Premiere Pro", awards: "" },
+            "9": { title: "妖怪圖騰設計Monster Motif Composition", bio: "本作品以日本妖怪為主題，將妖怪形象與圖騰融合，透過點、線、面的基本元素進行圖形構成練習。利用重複、對稱與線條粗細變化，讓畫面在規律中產生變化與節奏感。在基礎練習中加入妖怪元素，使圖形不只是構成，也帶有風格與意象表現。", images: [{src: "./14 Free Square Flyer Mockup With Shadow Overlay.png", size: "60%"},{src: "./monster1.png", size: "60%"},{src: "./monster2.png", size: "60%"}], advisor: "陳麗秋", role: "", tool: "Illustrator", awards: "" },
+            "10": { title: "樹蛙Tree Frog", bio: "這件作品是水彩技法練習，以青蛙作為主要描繪對象。透過水彩的暈染、疊色與明暗變化，表現青蛙身上的濕潤質感與立體感，同時練習背景虛化與主體細節的對比。整體希望呈現青蛙自然、鮮活的姿態，也作為對水彩控制與色彩層次的練習。", images: [{src: "./draw_frog.jpg", size: "60%"}], advisor: "陳麗秋", role: "", tool: "Watercolor painting", awards: "" },
+            "11": { title: "蛙Frog", bio: "這件作品是我第一次嘗試製作版畫時完成的練習作品，以青蛙作為主要元素。透過刻線、留白與黑白色塊的對比，練習版畫中線條粗細、紋理表現與印製效果。作品保留了手工刻印時產生的不規則痕跡，也呈現出版畫獨有的樸質感與層次。", images: [{src: "./print1.png", size: "60%"},{src: "./print.png", size: "60%"},{src: "./print2.png", size: "60%"}], advisor: "陳麗秋", role: "", tool: "Print", awards: "" }
+        };
+
+        window.addEventListener('mousemove', (e) => {
+            realMouseX = e.clientX; realMouseY = e.clientY;
+            if (window.innerWidth > 768 && !isTransitioning) {
+                const stageRect = magneticStage.getBoundingClientRect();
+                const isNearStage = (realMouseX >= stageRect.left - 100 && realMouseX <= stageRect.right + 100 && realMouseY >= stageRect.top - 100 && realMouseY <= stageRect.bottom + 100);
+                if (isNearStage) {
+                    const relX = (realMouseX - (stageRect.left + stageRect.width / 2)) / stageRect.width;
+                    const relY = (realMouseY - (stageRect.top + stageRect.height / 2)) / stageRect.height;
+                    cardRotX = -relY * 25; cardRotY = relX * 25; cardTransX = relX * 20; cardTransY = relY * 20;
+                    floatingBadges.forEach(badge => {
+                        const speed = parseFloat(badge.getAttribute('data-speed')) || 20;
+                        badge.style.transform = `translate3d(${relX * speed}px, ${relY * speed}px, 30px) rotate(${relX * speed * 0.5}deg)`;
+                    });
+                } else { resetMagneticPhysics(); }
+            }
+        });
+
+        function resetMagneticPhysics() { cardRotX *= 0.85; cardRotY *= 0.85; cardTransX *= 0.85; cardTransY *= 0.85; floatingBadges.forEach(b => b.style.transform = ''); }
+
+        function animatePhysicsLoop() {
+            renderCursorX += (realMouseX - renderCursorX) * 0.15; renderCursorY += (realMouseY - renderCursorY) * 0.15;
+            customCursor.style.transform = `translate3d(${renderCursorX}px, ${renderCursorY}px, 0) translate(-50%, -50%)`;
+            const rectLeft = pupilLeft.parentElement.getBoundingClientRect();
+            const centerLeftX = rectLeft.left + rectLeft.width / 2; const centerLeftY = rectLeft.top + rectLeft.height / 2;
+            const dLeftX = realMouseX - centerLeftX; const dLeftY = realMouseY - centerLeftY;
+            const distLeft = Math.sqrt(dLeftX * dLeftX + dLeftY * dLeftY);
+            let targetLeftX = 0, targetLeftY = 0;
+            if (distLeft > 0) { const angle = Math.atan2(dLeftY, dLeftX); const travel = Math.min(maxMoveRadius, distLeft * 0.05); targetLeftX = Math.cos(angle) * travel; targetLeftY = Math.sin(angle) * travel; }
+            curLeftX += (targetLeftX - curLeftX) * 0.15; curLeftY += (targetLeftY - curLeftY) * 0.15; pupilLeft.style.transform = `translate3d(${curLeftX}px, ${curLeftY}px, 0)`;
+            const rectRight = pupilRight.parentElement.getBoundingClientRect();
+            const centerRightX = rectRight.left + rectRight.width / 2; const centerRightY = rectRight.top + rectRight.height / 2;
+            const dRightX = realMouseX - centerRightX; const dRightY = realMouseY - centerRightY;
+            const distRight = Math.sqrt(dRightX * dRightX + dRightY * dRightY);
+            let targetRightX = 0, targetRightY = 0;
+            if (distRight > 0) { const angle = Math.atan2(dRightY, dRightX); const travel = Math.min(maxMoveRadius, distRight * 0.05); targetRightX = Math.cos(angle) * travel; targetRightY = Math.sin(angle) * travel; }
+            curRightX += (targetRightX - curRightX) * 0.15; curRightY += (targetRightY - curRightY) * 0.15; pupilRight.style.transform = `translate3d(${curRightX}px, ${curRightY}px, 0)`;
+            if (window.innerWidth > 768) magneticCard.style.transform = `translate3d(${cardTransX}px, ${cardTransY}px, 0) rotateX(${cardRotX}deg) rotateY(${cardRotY}deg)`;
+            requestAnimationFrame(animatePhysicsLoop);
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            requestAnimationFrame(animatePhysicsLoop);
+            setupProjectModalListeners(); setupCategoryFilterEngine();
+            refreshCursorHover();
+        });
+
+        function refreshCursorHover() {
+            const interactiveElements = document.querySelectorAll('a, button, .logo-interactive-wrap, .draggable-sticker, .service-card, .filter-btn, .fixed-double-eyes-container, .about-magnetic-stage, .modal-close-btn, .video-trigger-btn, .close-video-trigger');
+            interactiveElements.forEach(el => { el.addEventListener('mouseenter', () => customCursor.classList.add('hover')); el.addEventListener('mouseleave', () => customCursor.classList.remove('hover')); });
+        }
+
+        function scrollToSection(sectionId) { const target = document.getElementById(sectionId); if (!target) return; window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 90, behavior: "smooth" }); }
+
+        function setupCategoryFilterEngine() {
+            const filterBtns = document.querySelectorAll('.works-filter-navbar .filter-btn');
+            const projectCards = document.querySelectorAll('#worksGrid .service-card');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active')); btn.classList.add('active'); const filterValue = btn.getAttribute('data-filter');
+                    projectCards.forEach(card => {
+                        const cardTags = card.getAttribute('data-tags').split(' ');
+                        if (filterValue === 'all' || cardTags.includes(filterValue)) { card.classList.remove('hidden'); setTimeout(() => { card.style.opacity = '1'; card.style.transform = 'scale(1) translateY(0)'; }, 30); }
+                        else { card.style.opacity = '0'; card.style.transform = 'scale(0.95) translateY(10px)'; setTimeout(() => { card.classList.add('hidden'); }, 350); }
+                    });
+                });
+            });
+        }
+
+        function setupProjectModalListeners() {
+            document.querySelectorAll('.service-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const projectData = projectsDatabase[card.getAttribute('data-project-id')];
+                    if (projectData) {
+                        modalImagesContainer.innerHTML = '';
+                        const mediaItems = [];
+                        if (projectData.iframe) mediaItems.push({ type: 'iframe', content: projectData.iframe });
+                        if (projectData.video) mediaItems.push({ type: 'video', content: projectData.video });
+                        projectData.images.forEach(img => { if(img.src) mediaItems.push({ type: 'image', src: img.src, size: img.size }); });
+                        
+                        const isSingle = mediaItems.length === 1;
+                        
+                        mediaItems.forEach((item, index) => {
+                            const mediaWrapper = document.createElement('div');
+                            if (isSingle) {
+                                mediaWrapper.className = `media-item`;
+                                mediaWrapper.style.justifyContent = 'center';
+                                mediaWrapper.style.alignItems = 'center';
+                                mediaWrapper.style.minHeight = window.innerWidth > 768 ? '80vh' : '40vh';
+                            } else {
+                                mediaWrapper.className = `media-item ${index % 2 === 0 ? 'item-left' : 'item-right'}`;
+                            }
+
+                            if (item.type === 'iframe') {
+                                mediaWrapper.innerHTML = item.content;
+                                mediaWrapper.style.justifyContent = 'center';
+                            } else if (item.type === 'video') {
+                                const videoContainer = document.createElement('div'); videoContainer.className = 'modal-video-container';
+                                const video = document.createElement('video'); video.src = item.content; video.controls = true; video.autoplay = true; video.loop = true;
+                                if (isSingle) video.style.maxWidth = '90%';
+                                videoContainer.appendChild(video); mediaWrapper.appendChild(videoContainer);
+                            } else {
+                                const img = document.createElement('img'); img.src = item.src;
+                                img.style.maxWidth = isSingle ? '90%' : item.size;
+                                img.className = 'modal-gallery-img'; mediaWrapper.appendChild(img);
+                            }
+                            modalImagesContainer.appendChild(mediaWrapper);
+                        });
+
+                        modalTitle.textContent = projectData.title; modalBio.textContent = projectData.bio; modalAdvisor.textContent = projectData.advisor; modalRole.textContent = projectData.role; modalTool.textContent = projectData.tool; modalAwards.textContent = projectData.awards;
+                        projectModal.classList.add('active'); document.body.style.overflowY = 'hidden';
+                    }
+                });
+            });
+            modalCloseBtn.addEventListener('click', closeModal);
+            projectModal.addEventListener('click', (e) => { if (e.target === projectModal || e.target === modalImagesContainer) closeModal(); });
+            function closeModal() { const video = projectModal.querySelector('video'); if (video) { video.pause(); video.currentTime = 0; } projectModal.classList.remove('active'); document.body.style.overflowY = 'auto'; }
+        }
+    </script>
+</body>
+</html>
